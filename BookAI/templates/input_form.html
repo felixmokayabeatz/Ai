@@ -1,0 +1,126 @@
+<!-- Updated input_form.html -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Book Recommendation Form</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+  <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+</head>
+<body>
+
+<div class="container mt-5">
+  <div class="row justify-content-center">
+    <div class="col-md-8">
+        <form id="bookRecommendationForm" method="post" action="{% url 'book_recommendation' %}">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="id_title">Title</label>
+                <input type="text" name="title" class="form-control" id="id_title">
+            </div>
+            <div class="form-group">
+                <label for="id_genre">Genre</label>
+                <input type="text" name="genre" class="form-control" id="id_genre">
+            </div>
+            <div class="form-group">
+                <label for="id_author">Author</label>
+                <input type="text" name="author" class="form-control" id="id_author">
+            </div>
+            <div class="form-group">
+                <label for="id_publishDate">Publication Year</label>
+                <input type="text" name="publishDate" class="form-control" id="id_publishDate">
+            </div>
+            <div class="form-group">
+                <label for="id_rating">Rating</label>
+                <input type="text" name="rating" class="form-control" id="id_rating">
+            </div>
+            <div class="form-group">
+                <label for="id_description">Description</label>
+                <input type="text" name="description" class="form-control" id="id_description">
+            </div>
+            <button type="button" class="btn btn-primary" onclick="submitForm()">Submit</button>
+        </form>
+    </div>
+  </div>
+
+  <div class="row mt-4">
+    <div class="col-md-12">
+      <div id="recommendationResults" class="row">
+        <!-- Results will be displayed here -->
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+<script>
+  function submitForm() {
+      // Serialize the form data
+      var formData = $('#bookRecommendationForm').serialize();
+
+      // Make an AJAX POST request
+      $.ajax({
+          type: 'POST',
+          url: '{% url "book_recommendation" %}',
+          data: formData,
+          success: function(response) {
+              // Handle the response and update the HTML
+              if (response.success) {
+                  displayRecommendedBooks(response.data, response.totalBooksFound);
+              } else {
+                  displayErrorMessage(response.message);
+              }
+          },
+          error: function(error) {
+              console.log('Error:', error);
+          }
+      });
+  }
+
+  function displayRecommendedBooks(recommendedBooks, totalBooksFound) {
+      var resultsContainer = $('#recommendationResults');
+      resultsContainer.empty(); // Clear previous results
+
+      // Display the number of books found
+      resultsContainer.append('<p>Number of books found: ' + totalBooksFound + '</p>');
+
+      // Check if there are recommended books
+      if (recommendedBooks.length > 0) {
+          // Loop through recommendedBooks and create HTML elements
+          for (var i = 0; i < recommendedBooks.length; i++) {
+              var book = recommendedBooks[i];
+
+              // Create a card for each book
+              var card = $('<div class="col-md-6 mb-4">');
+              var cardBody = $('<div class="card-body">');
+              var title = $('<h5 class="card-title">' + book.title + '</h5>');
+              var author = $('<p class="card-text">Author: ' + book.author + '</p>');
+              var genres = $('<p class="card-text">Genres: ' + book.genres + '</p>');
+              var publishDate = $('<p class="card-text">Publish Date: ' + book.publishDate + '</p>');
+              var rating = $('<p class="card-text">Average Rating: ' + book.rating + '</p>');
+              var description = $('<p class="card-text">Description: ' + book.description + '</p>');
+
+              // Append elements to the cardBody
+              cardBody.append(title, author, genres, publishDate, rating, description);
+
+              // Append cardBody to the card
+              card.append(cardBody);
+
+              // Add the card to the resultsContainer
+              resultsContainer.append(card);
+          }
+      } else {
+          resultsContainer.append('<p>No books found based on the given criteria.</p>');
+      }
+  }
+
+  function displayErrorMessage(message) {
+      var resultsContainer = $('#recommendationResults');
+      resultsContainer.html('<div class="alert alert-danger">' + message + '</div>');
+  }
+</script>
+
+</body>
+</html>

@@ -1,0 +1,1 @@
+web: gunicorn BookAiReccommender.wsgi--log file -
