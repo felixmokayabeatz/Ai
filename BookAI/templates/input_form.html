@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+  <link rel="stylesheet" href="theme_switcher.html">
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Book Recommendation Form</title>
@@ -86,49 +87,41 @@
   }
 
   function displayRecommendedBooks(recommendedBooks, totalBooksFound) {
-    var resultsContainer = $('#recommendationResults');
-    resultsContainer.empty(); // Clear previous results
+      var resultsContainer = $('#recommendationResults');
+      resultsContainer.empty(); // Clear previous results
 
-    // Create a div to contain the message
-    var messageDiv = $('<div class="mb-4">');
-    
-    // Display the number of books found
-    messageDiv.append('<p>Number of books found: ' + totalBooksFound + '</p>');
+      // Check if there are recommended books
+      if (recommendedBooks.length > 0) {
+          // Loop through recommendedBooks and create HTML elements
+          for (var i = 0; i < recommendedBooks.length; i++) {
+              var book = recommendedBooks[i];
 
-    // Append the message div to the resultsContainer
-    resultsContainer.append(messageDiv);
+              // Create a card for each book
+              var card = $('<div class="col-md-6 mb-4">');
+              var cardBody = $('<div class="card">');
+              var cardContent = $('<div class="card-body">');
+              var title = $('<h5 class="card-title">' + book.title + '</h5>');
+              var author = $('<p class="card-text">Author: ' + book.author + '</p>');
+              var publishDate = $('<p class="card-text">Publish Date: ' + book.publishDate + '</p>');
+              var description = $('<p class="card-text">Description: ' + book.description + '</p>');
 
-    // Check if there are recommended books
-    if (recommendedBooks.length > 0) {
-        // Loop through recommendedBooks and create HTML elements
-        for (var i = 0; i < recommendedBooks.length; i++) {
-            var book = recommendedBooks[i];
+              // Append elements to the cardBody
+              cardContent.append(title, author, publishDate, description);
 
-            // Create a card for each book
-            var card = $('<div class="col-md-6 mb-4">');
-            var cardBody = $('<div class="card">');
-            var cardContent = $('<div class="card-body">');
-            var title = $('<h5 class="card-title">' + book.title + '</h5>');
-            var author = $('<p class="card-text">Author: ' + book.author + '</p>');
-            var publishDate = $('<p class="card-text">Publish Date: ' + book.publishDate + '</p>');
-            var description = $('<p class="card-text">Description: ' + book.description + '</p>');
+              // Append cardContent to the card
+              cardBody.append(cardContent);
 
-            // Append elements to the cardBody
-            cardContent.append(title, author, publishDate, description);
+              // Append the card to the resultsContainer
+              card.append(cardBody);
+              resultsContainer.append(card);
+          }
+      } else {
+          resultsContainer.append('<p>No books found based on the given criteria.</p>');
+      }
 
-            // Append cardContent to the card
-            cardBody.append(cardContent);
-
-            // Append the card to the resultsContainer
-            card.append(cardBody);
-            resultsContainer.append(card);
-        }
-    } else {
-        resultsContainer.append('<p>No books found based on the given criteria.</p>');
-    }
-}
-
-
+      // Display the number of books found after the loop
+      resultsContainer.prepend('<div class="col-md-12"><p class="mb-4">Number of books found: ' + totalBooksFound + '</p></div>');
+  }
 
   function displayErrorMessage(message) {
       var resultsContainer = $('#recommendationResults');
