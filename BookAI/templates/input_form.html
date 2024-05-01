@@ -1,12 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <link rel="stylesheet" href="theme.html">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+  <link rel="stylesheet" href="theme.css">
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Book Recommendation Form</title>
-  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
-  <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
   <style>
     /* Custom CSS */
     #recommendationResults .card {
@@ -46,6 +45,7 @@
               <input type="text" name="description" class="form-control" id="id_description">
             </div>
             <button type="button" class="btn btn-primary" onclick="submitForm()">Submit</button>
+            <button type="button" id="themeSwitcherBtn" class="btn btn-primary ml-2">Toggle Theme</button>
           </form>
         </div>
       </div>
@@ -61,8 +61,19 @@
   </div>
 </div>
 
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 <script>
+  // Function to toggle between black and white themes
+  function toggleTheme() {
+    $('body').toggleClass('black-theme');
+  }
+
+  // Event listener for the theme switcher button
+  $('#themeSwitcherBtn').click(function() {
+    toggleTheme();
+  });
+
   function submitForm() {
       // Serialize the form data
       var formData = $('#bookRecommendationForm').serialize();
