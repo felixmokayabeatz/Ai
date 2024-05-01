@@ -17,7 +17,6 @@ def recommend_books(request):
                 search_params = {
                     'title': form.cleaned_data.get('title', ''),
                     'author': form.cleaned_data.get('author', ''),
-                    'subject': form.cleaned_data.get('genre', ''),
                     'publish_date': form.cleaned_data.get('publishDate', ''),
                     'first_sentence': form.cleaned_data.get('description', ''),
                     'limit': 10
@@ -33,9 +32,7 @@ def recommend_books(request):
                             book_info = {
                                 'title': book.get('title', ''),
                                 'author': book.get('author_name', ''),
-                                # 'genres': ', '.join(book.get('subject', [])),
                                 'publishDate': ', '.join(book.get('publish_date', [])),
-                                # 'rating': book.get('average_rating', ''),
                                 'description': book.get('first_sentence', ''),
                                 'cover_i': f"https://covers.openlibrary.org/b/id/{book.get('cover_i', 0)}-L.jpg",
                             }
