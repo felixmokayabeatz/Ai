@@ -2,17 +2,16 @@
 
 <!-- Your recommendation display HTML goes here -->
 <div id="bookRecommenderSection">
-    <h2>Recommended Books:</h2>
-    <ul>
-      {% for book in recommended_books %}
-        <li>
-          <strong>Title:</strong> {{ book.title }}<br>
-          <strong>Author:</strong> {{ book.author }}<br>
-          <strong>Publish Date:</strong> {{ book.publishDate }}<br>
-          <strong>Average Rating:</strong> {{ book.rating }}<br>
-          <br>
-        </li>
-      {% endfor %}
-    </ul>
-  </div>
-  
+  <h2>Recommended Books:</h2>
+  <ul>
+    {% for book in recommended_books %}
+      <li>
+        <strong>Title:</strong> {{ book.title }}<br>
+        <strong>Author:</strong> {{ book.author }}<br>
+        <strong>Publish Date:</strong> {{ book.publishDate }}<br>
+        <strong>Average Rating:</strong> {{ book.rating }}<br>
+        <br>
+      </li>
+    {% endfor %}
+  </ul>
+</div>

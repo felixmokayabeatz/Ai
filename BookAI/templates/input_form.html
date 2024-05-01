@@ -1,20 +1,46 @@
 <!DOCTYPE html>
 <html lang="en">
+    
 <head>
+
+ 
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
-  <link rel="stylesheet" href="theme.css">
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Book Recommendation Form</title>
+
+ 
+
   <style>
-    /* Custom CSS */
+    /* Black theme */
+    body {
+      background-color: #000;
+      color: #fff;
+    }
+
+    #recommendationResults {
+      color: #fff; /* Ensure text color is visible in the dark theme */
+    }
+
     #recommendationResults .card {
       border: 1px solid #dee2e6;
       border-radius: 5px;
       transition: box-shadow 0.3s;
+      background-color: #222; /* Darker background for cards */
     }
+
     #recommendationResults .card:hover {
-      box-shadow: 0px 0px 15px 0px rgba(0,0,0,0.1);
+      box-shadow: 0px 0px 15px 0px rgba(255,255,255,0.1); /* Lighter shadow on hover */
+    }
+
+    /* Styling for the form */
+    .card-body {
+      background-color: #333; /* Darker background for form */
+    }
+
+    /* Styling for the toggle theme button */
+    #themeSwitcherBtn {
+      margin-bottom: 20px; /* Ensure space between button and cards */
     }
   </style>
 </head>
@@ -45,35 +71,20 @@
               <input type="text" name="description" class="form-control" id="id_description">
             </div>
             <button type="button" class="btn btn-primary" onclick="submitForm()">Submit</button>
-            <button type="button" id="themeSwitcherBtn" class="btn btn-primary ml-2">Toggle Theme</button>
           </form>
         </div>
       </div>
     </div>
   </div>
 
-  <div class="row mt-4">
-    <div class="col-md-12">
-      <div id="recommendationResults" class="row">
-        <!-- Results will be displayed here -->
-      </div>
-    </div>
+  <div class="row mt-4" id="recommendationResults">
+    <!-- Results will be displayed here -->
   </div>
 </div>
 
 <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 <script>
-  // Function to toggle between black and white themes
-  function toggleTheme() {
-    $('body').toggleClass('black-theme');
-  }
-
-  // Event listener for the theme switcher button
-  $('#themeSwitcherBtn').click(function() {
-    toggleTheme();
-  });
-
   function submitForm() {
       // Serialize the form data
       var formData = $('#bookRecommendationForm').serialize();
@@ -98,45 +109,60 @@
   }
 
   function displayRecommendedBooks(recommendedBooks, totalBooksFound) {
-      var resultsContainer = $('#recommendationResults');
-      resultsContainer.empty(); // Clear previous results
+    var resultsContainer = $('#recommendationResults');
+    resultsContainer.empty(); // Clear previous results
 
-      // Check if there are recommended books
-      if (recommendedBooks.length > 0) {
-          // Loop through recommendedBooks and create HTML elements
-          for (var i = 0; i < recommendedBooks.length; i++) {
-              var book = recommendedBooks[i];
+    // Check if there are recommended books
+    if (recommendedBooks.length > 0) {
 
-              // Create a card for each book
-              var card = $('<div class="col-md-6 mb-4">');
-              var cardBody = $('<div class="card">');
-              var cardContent = $('<div class="card-body">');
-              var title = $('<h5 class="card-title">' + book.title + '</h5>');
-              var author = $('<p class="card-text">Author: ' + book.author + '</p>');
-              var publishDate = $('<p class="card-text">Publish Date: ' + book.publishDate + '</p>');
-              var description = $('<p class="card-text">Description: ' + book.description + '</p>');
+                // Display the total number of books found
+                
+                resultsContainer.prepend('<div class="col-md-12"><p class="mb-4"><strong>Top Ten Matching Books</strong> </p></div>');
+                resultsContainer.prepend('<div class="col-md-12"><p class="mb-4"><strong>Number of books found: ' + totalBooksFound + '</strong></p></div>');
 
-              // Append elements to the cardBody
-              cardContent.append(title, author, publishDate, description);
 
-              // Append cardContent to the card
-              cardBody.append(cardContent);
+        // Loop through recommendedBooks and create HTML elements
+        for (var i = 0; i < recommendedBooks.length; i++) {
+            var book = recommendedBooks[i];
 
-              // Append the card to the resultsContainer
-              card.append(cardBody);
-              resultsContainer.append(card);
-          }
-      } else {
-          resultsContainer.append('<p>No books found based on the given criteria.</p>');
-      }
+            // Create a card for each book
+            var card = $('<div class="col-md-6 mb-4">');
+            var cardBody = $('<div class="card">');
+            var cardContent = $('<div class="card-body">');
+            var title = $('<h5 class="card-title">' + book.title + '</h5>');
+            var author = $('<p class="card-text">Author: ' + book.author + '</p>');
+            var publishDate = $('<p class="card-text">Publish Date: ' + book.publishDate + '</p>');
+            var description = $('<p class="card-text">Description: ' + book.description + '</p>');
+            var link = $('<a href="' + book.link + '" target="_blank"><strong>View Book</strong></a>'); // Create the link with target="_blank"
 
-      // Display the number of books found after the loop
-      resultsContainer.prepend('<div class="col-md-12"><p class="mb-4">Number of books found: ' + totalBooksFound + '</p></div>');
-  }
+
+
+
+            
+
+
+            // Append elements to the cardBody
+            cardContent.append(title, author, publishDate, description);
+            cardContent.append(title, author, publishDate, description, link); // Append the link to card content
+
+            // Append cardContent to the card
+            cardBody.append(cardContent);
+
+            // Append the card to the resultsContainer
+            card.append(cardBody);
+            resultsContainer.append(card);
+        }
+
+
+    } else {
+        // Display message if no books found
+        resultsContainer.append('<div class="col-md-12"><p class="mb-4">No books found based on the given criteria.</p></div>');
+    }
+}
 
   function displayErrorMessage(message) {
       var resultsContainer = $('#recommendationResults');
-      resultsContainer.html('<div class="alert alert-danger">' + message + '</div>');
+      resultsContainer.html('<div class="col-md-12"><p class="alert alert-danger">' + message + '</p></div>');
   }
 </script>
 
