@@ -21,10 +21,6 @@
                 <input type="text" name="title" class="form-control" id="id_title">
             </div>
             <div class="form-group">
-                <label for="id_genre">Genre</label>
-                <input type="text" name="genre" class="form-control" id="id_genre">
-            </div>
-            <div class="form-group">
                 <label for="id_author">Author</label>
                 <input type="text" name="author" class="form-control" id="id_author">
             </div>
@@ -97,7 +93,6 @@
               var cardBody = $('<div class="card-body">');
               var title = $('<h5 class="card-title">' + book.title + '</h5>');
               var author = $('<p class="card-text">Author: ' + book.author + '</p>');
-              var genres = $('<p class="card-text">Genres: ' + book.genres + '</p>');
               var publishDate = $('<p class="card-text">Publish Date: ' + book.publishDate + '</p>');
               var rating = $('<p class="card-text">Average Rating: ' + book.rating + '</p>');
               var description = $('<p class="card-text">Description: ' + book.description + '</p>');
